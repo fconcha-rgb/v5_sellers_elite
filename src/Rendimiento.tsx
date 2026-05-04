@@ -373,7 +373,7 @@ const Spinner: React.FC = () => (
         animation: 'spin 0.8s linear infinite',
       }}
     />
-    <style>{@keyframes spin { to { transform: rotate(360deg); } }}</style>
+    <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     <div style={{ marginTop: 12, fontSize: 13 }}>Cargando datos...</div>
   </div>
 );
