@@ -542,7 +542,7 @@ sub={(totals.yoy >= 0 ? '+' : '') + (totals.yoy * 100).toFixed(1) + '% YoY'}
 positive={totals.yoy >= 0}
 />
 <KpiCard
-label=“Fplus Promedio”
+label="Fplus Promedio"
 value={fmtScore(totals.fplus)}
 sub={totals.fplusAlerts + ' sellers bajo 5'}
 alert={totals.fplus < 5}
