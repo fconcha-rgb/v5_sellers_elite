@@ -599,7 +599,7 @@ alert={totals.fplus < 5}
             {oltData.map((entry, i) => (
               <Cell key={i} fill={entry.fill} />
             ))}
-            <LabelList dataKey="total" position="right" formatter={(v: number) => v + '%'} style={{ fontSize: 10, fill: C.textSec }} />
+            <LabelList dataKey="total" position="right" formatter={((v: any) => `${v}%`) as any} style={{ fontSize: 10, fill: C.textSec }} />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
