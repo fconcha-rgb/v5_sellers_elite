@@ -2026,6 +2026,7 @@ function AppInner() {
 
         {/* ═══ DASHBOARD ═══ */}
         {tab === 'rendimiento' && <Rendimiento />}
+        {tab === 'dashboard' && (
           <div className="fi" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div className="kpi-row" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', flex: 1 }}>
               <KpiCard label="Revenue YTD" value={fmt(kpi.ytdRev)} color={C.primary} />
