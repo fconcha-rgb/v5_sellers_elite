@@ -176,7 +176,7 @@ yoyMap.set(r.seller_id, cur);
 
 const result: SellerKPIs[] = [];
 bySeller.forEach((rows, seller_id) => {
-const sortedByDate = […rows].sort((a, b) => b.fecha.localeCompare(a.fecha));
+const sortedByDate = [...rows].sort((a, b) => b.fecha.localeCompare(a.fecha));
 const latest = sortedByDate[0];
 
 
@@ -264,7 +264,7 @@ const { data, error } = await build(supabase.from(table).select('*'))
 .range(from_, from_ + pageSize - 1);
 if (error) throw error;
 if (!data || data.length === 0) break;
-out.push(…(data as T[]));
+out.push(...(data as T[]));
 if (data.length < pageSize) break;
 from_ += pageSize;
 }
@@ -459,7 +459,7 @@ return { nmv, nmv_ly, fplus, content, olt, promo, sp, fplusAlerts, yoy };
 
 const fplusData = useMemo(
 () =>
-[…kpis]
+[...kpis]
 .filter((k) => k.fplus_avg > 0)
 .sort((a, b) => a.fplus_avg - b.fplus_avg)
 .slice(0, 15)
@@ -473,7 +473,7 @@ fill: k.fplus_avg < 5 ? C.danger : C.primary,
 
 const spData = useMemo(
 () =>
-[…kpis]
+[...kpis]
 .filter((k) => k.nmv > 0)
 .sort((a, b) => a.sp_ratio - b.sp_ratio)
 .slice(0, 15)
@@ -487,7 +487,7 @@ ratio: Number((k.sp_ratio * 100).toFixed(2)),
 
 const oltData = useMemo(
 () =>
-[…kpis]
+[...kpis]
 .filter((k) => k.olt_24h_total > 0)
 .sort((a, b) => a.olt_24h_total - b.olt_24h_total)
 .slice(0, 15)
@@ -503,7 +503,7 @@ fill: k.olt_24h_total < 0.6 ? C.danger : k.olt_24h_total < 0.75 ? C.warning : C.
 
 const promoData = useMemo(
 () =>
-[…kpis]
+[...kpis]
 .filter((k) => k.nmv > 0)
 .sort((a, b) => a.promo_ratio - b.promo_ratio)
 .slice(0, 15)
@@ -519,7 +519,7 @@ ratio: Number((k.promo_ratio * 100).toFixed(2)),
 
 const skusData = useMemo(
 () =>
-[…kpis]
+[...kpis]
 .filter((k) => k.skus_branded + k.skus_generico > 0)
 .sort((a, b) => b.skus_pct_generico - a.skus_pct_generico)
 .slice(0, 15)
