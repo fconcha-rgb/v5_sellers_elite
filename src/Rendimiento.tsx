@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useState } from ‘react’;
+import { useEffect, useMemo, useState } from 'react';
 import {
 BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
 LineChart, Line, ComposedChart, LabelList,
-} from ‘recharts’;
-import { supabase } from ‘./api’;
+} from 'recharts';
+import { supabase } from './api';
 
 /* ──────────────────────────────────────────────────────────────
 TYPES
 ────────────────────────────────────────────────────────────── */
-type RendSubtab = ‘general’ | ‘kam’ | ‘seller’;
-type Periodo = ‘7d’ | ‘30d’ | ‘90d’ | ‘custom’;
+type RendSubtab = 'general' | 'kam' | 'seller';
+type Periodo = '7d' | '30d' | '90d' | 'custom';
 
 type MasterDaily = {
 fecha: string;
@@ -90,48 +90,48 @@ nmv_ly: number;
 PALETTE (matches V1)
 ────────────────────────────────────────────────────────────── */
 const C = {
-bg: ‘#F8F9FB’,
-bgCard: ‘#FFFFFF’,
-bgAlt: ‘#F1F3F6’,
-bgDark: ‘#E8ECF0’,
-border: ‘#E5E8EC’,
-borderLight: ‘#EEF0F3’,
-text: ‘#1B1F24’,
-textSec: ‘#5A6473’,
-textMuted: ‘#8E96A3’,
-primary: ‘#16A34A’,
-primaryLight: ‘#DCFCE7’,
-primaryDark: ‘#15803D’,
-primaryBg: ‘#F0FDF4’,
-secondary: ‘#64748B’,
-tertiary: ‘#3B82F6’,
-tertiaryLight: ‘#DBEAFE’,
-tertiaryBg: ‘#EFF6FF’,
-danger: ‘#EF4444’,
-dangerLight: ‘#FEE2E2’,
-warning: ‘#F59E0B’,
-warningLight: ‘#FEF9C3’,
-warningBg: ‘#FFFBEB’,
-purple: ‘#7C3AED’,
-purpleLight: ‘#EDE9FE’,
+bg: '#F8F9FB',
+bgCard: '#FFFFFF',
+bgAlt: '#F1F3F6',
+bgDark: '#E8ECF0',
+border: '#E5E8EC',
+borderLight: '#EEF0F3',
+text: '#1B1F24',
+textSec: '#5A6473',
+textMuted: '#8E96A3',
+primary: '#16A34A',
+primaryLight: '#DCFCE7',
+primaryDark: '#15803D',
+primaryBg: '#F0FDF4',
+secondary: '#64748B',
+tertiary: '#3B82F6',
+tertiaryLight: '#DBEAFE',
+tertiaryBg: '#EFF6FF',
+danger: '#EF4444',
+dangerLight: '#FEE2E2',
+warning: '#F59E0B',
+warningLight: '#FEF9C3',
+warningBg: '#FFFBEB',
+purple: '#7C3AED',
+purpleLight: '#EDE9FE',
 };
 
 /* ──────────────────────────────────────────────────────────────
 FORMATTERS
 ────────────────────────────────────────────────────────────── */
 const fmt = (n: number) => {
-if (!n && n !== 0) return ‘-’;
-if (Math.abs(n) >= 1e9) return ‘$’ + (n / 1e9).toFixed(1) + ‘B’;
-if (Math.abs(n) >= 1e6) return ‘$’ + (n / 1e6).toFixed(1) + ‘M’;
-if (Math.abs(n) >= 1e3) return ‘$’ + (n / 1e3).toFixed(0) + ‘K’;
-return ‘$’ + Math.round(n);
+if (!n && n !== 0) return '-';
+if (Math.abs(n) >= 1e9) return '$' + (n / 1e9).toFixed(1) + 'B';
+if (Math.abs(n) >= 1e6) return '$' + (n / 1e6).toFixed(1) + 'M';
+if (Math.abs(n) >= 1e3) return '$' + (n / 1e3).toFixed(0) + 'K';
+return '$' + Math.round(n);
 };
-const fmtNum = (n: number) => new Intl.NumberFormat(‘es-CL’).format(Math.round(n || 0));
+const fmtNum = (n: number) => new Intl.NumberFormat('es-CL').format(Math.round(n || 0));
 const fmtPct = (n: number) => {
-if (!isFinite(n) || isNaN(n)) return ‘-’;
-return (n * 100).toFixed(1) + ‘%’;
+if (!isFinite(n) || isNaN(n)) return '-';
+return (n * 100).toFixed(1) + '%';
 };
-const fmtScore = (n: number | null) => (n == null ? ‘-’ : n.toFixed(1));
+const fmtScore = (n: number | null) => (n == null ? '-' : n.toFixed(1));
 
 /* ──────────────────────────────────────────────────────────────
 DATE UTILS
@@ -144,8 +144,8 @@ return d.toISOString().slice(0, 10);
 };
 
 const periodoToDates = (p: Periodo, customFrom: string, customTo: string): [string, string] => {
-if (p === ‘custom’) return [customFrom, customTo];
-const days = p === ‘7d’ ? 7 : p === ‘30d’ ? 30 : 90;
+if (p === 'custom') return [customFrom, customTo];
+const days = p === '7d' ? 7 : p === '30d' ? 30 : 90;
 return [daysAgoStr(days), todayStr()];
 };
 
@@ -260,7 +260,7 @@ const out: T[] = [];
 let from_ = 0;
 const pageSize = 1000;
 while (true) {
-const { data, error } = await build(supabase.from(table).select(’*’))
+const { data, error } = await build(supabase.from(table).select('*'))
 .range(from_, from_ + pageSize - 1);
 if (error) throw error;
 if (!data || data.length === 0) break;
@@ -329,7 +329,7 @@ alert?: boolean;
 positive?: boolean;
 }> = ({ label, value, sub, alert, positive }) => (
 <Card>
-<div style={{ fontSize: 11, color: C.textMuted, fontWeight: 600, textTransform: ‘uppercase’, letterSpacing: 0.5 }}>
+<div style={{ fontSize: 11, color: C.textMuted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
 {label}
 </div>
 <div
@@ -338,7 +338,7 @@ fontSize: 26,
 fontWeight: 800,
 color: alert ? C.danger : positive ? C.primary : C.text,
 marginTop: 6,
-letterSpacing: ‘-0.5px’,
+letterSpacing: '-0.5px',
 }}
 > 
 {value}
@@ -534,17 +534,17 @@ pct: Number((k.skus_pct_generico * 100).toFixed(1)),
 
 return (
 <>
-<div style={{ display: ‘grid’, gridTemplateColumns: ‘repeat(auto-fit, minmax(180px, 1fr))’, gap: 12, marginBottom: 18 }}>
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 18 }}>
 <KpiCard
 label="NMV Total"
 value={fmt(totals.nmv)}
-sub={(totals.yoy >= 0 ? ‘+’ : ‘’) + (totals.yoy * 100).toFixed(1) + ‘% YoY’}
+sub={(totals.yoy >= 0 ? '+' : '') + (totals.yoy * 100).toFixed(1) + '% YoY'}
 positive={totals.yoy >= 0}
 />
 <KpiCard
 label=“Fplus Promedio”
 value={fmtScore(totals.fplus)}
-sub={totals.fplusAlerts + ’ sellers bajo 5’}
+sub={totals.fplusAlerts + ' sellers bajo 5'}
 alert={totals.fplus < 5}
 />
 <KpiCard label="OLT 24h" value={fmtPct(totals.olt)} sub="FBS + FBF promedio" />
@@ -705,40 +705,40 @@ return out.sort((a, b) => b.nmv - a.nmv);
 return (
 <Card>
 <SectionTitle sub="Comparativa de KPIs por KAM — Sellers Elite">Rendimiento por KAM</SectionTitle>
-<div style={{ overflowX: ‘auto’ }}>
-<table style={{ width: ‘100%’, fontSize: 13, borderCollapse: ‘collapse’ }}>
+<div style={{ overflowX: 'auto' }}>
+<table style={{ width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
 <thead>
-<tr style={{ background: C.bgAlt, textAlign: ‘left’ }}>
+<tr style={{ background: C.bgAlt, textAlign: 'left' }}>
 <th style={{ padding: 10, fontWeight: 700 }}>KAM</th>
-<th style={{ padding: 10, fontWeight: 700, textAlign: ‘right’ }}>Sellers</th>
-<th style={{ padding: 10, fontWeight: 700, textAlign: ‘right’ }}>NMV</th>
-<th style={{ padding: 10, fontWeight: 700, textAlign: ‘right’ }}>YoY</th>
-<th style={{ padding: 10, fontWeight: 700, textAlign: ‘right’ }}>Fplus</th>
-<th style={{ padding: 10, fontWeight: 700, textAlign: ‘right’ }}>OLT 24h</th>
-<th style={{ padding: 10, fontWeight: 700, textAlign: ‘right’ }}>Content</th>
-<th style={{ padding: 10, fontWeight: 700, textAlign: ‘right’ }}>Ratio SP</th>
-<th style={{ padding: 10, fontWeight: 700, textAlign: ‘right’ }}>Promo</th>
+<th style={{ padding: 10, fontWeight: 700, textAlign: 'right' }}>Sellers</th>
+<th style={{ padding: 10, fontWeight: 700, textAlign: 'right' }}>NMV</th>
+<th style={{ padding: 10, fontWeight: 700, textAlign: 'right' }}>YoY</th>
+<th style={{ padding: 10, fontWeight: 700, textAlign: 'right' }}>Fplus</th>
+<th style={{ padding: 10, fontWeight: 700, textAlign: 'right' }}>OLT 24h</th>
+<th style={{ padding: 10, fontWeight: 700, textAlign: 'right' }}>Content</th>
+<th style={{ padding: 10, fontWeight: 700, textAlign: 'right' }}>Ratio SP</th>
+<th style={{ padding: 10, fontWeight: 700, textAlign: 'right' }}>Promo</th>
 </tr>
 </thead>
 <tbody>
 {kamData.map((k) => (
-<tr key={k.kam} style={{ borderTop: ’1px solid ’ + C.border }}>
+<tr key={k.kam} style={{ borderTop: '1px solid ' + C.border }}>
 <td style={{ padding: 10, fontWeight: 600 }}>{k.kam}</td>
-<td style={{ padding: 10, textAlign: ‘right’ }}>{k.sellers}</td>
-<td style={{ padding: 10, textAlign: ‘right’, fontWeight: 600 }}>{fmt(k.nmv)}</td>
-<td style={{ padding: 10, textAlign: ‘right’, color: k.yoy >= 0 ? C.primary : C.danger, fontWeight: 700 }}>
+<td style={{ padding: 10, textAlign: 'right' }}>{k.sellers}</td>
+<td style={{ padding: 10, textAlign: 'right', fontWeight: 600 }}>{fmt(k.nmv)}</td>
+<td style={{ padding: 10, textAlign: 'right', color: k.yoy >= 0 ? C.primary : C.danger, fontWeight: 700 }}>
 {(k.yoy * 100).toFixed(1)}%
 </td>
-<td style={{ padding: 10, textAlign: ‘right’, color: k.fplus < 5 ? C.danger : C.text, fontWeight: 600 }}>
+<td style={{ padding: 10, textAlign: 'right', color: k.fplus < 5 ? C.danger : C.text, fontWeight: 600 }}>
 {fmtScore(k.fplus)}
 {k.fplus_alerts > 0 && (
 <span style={{ fontSize: 10, color: C.danger, marginLeft: 4 }}>({k.fplus_alerts})</span>
 )}
 </td>
-<td style={{ padding: 10, textAlign: ‘right’ }}>{fmtPct(k.olt)}</td>
-<td style={{ padding: 10, textAlign: ‘right’ }}>{k.content.toFixed(0)}</td>
-<td style={{ padding: 10, textAlign: ‘right’ }}>{fmtPct(k.sp_ratio)}</td>
-<td style={{ padding: 10, textAlign: ‘right’ }}>{fmtPct(k.promo)}</td>
+<td style={{ padding: 10, textAlign: 'right' }}>{fmtPct(k.olt)}</td>
+<td style={{ padding: 10, textAlign: 'right' }}>{k.content.toFixed(0)}</td>
+<td style={{ padding: 10, textAlign: 'right' }}>{fmtPct(k.sp_ratio)}</td>
+<td style={{ padding: 10, textAlign: 'right' }}>{fmtPct(k.promo)}</td>
 </tr>
 ))}
 </tbody>
@@ -752,7 +752,7 @@ return (
 POR SELLER
 ────────────────────────────────────────────────────────────── */
 const PorSeller: React.FC<{ kpis: SellerKPIs[]; daily: MasterDaily[]; yoy: YoyRow[] }> = ({ kpis, daily, yoy }) => {
-const [selected, setSelected] = useState<string>(kpis[0]?.seller_id || ‘’);
+const [selected, setSelected] = useState<string>(kpis[0]?.seller_id || '');
 
 useEffect(() => {
 if (!selected && kpis.length > 0) setSelected(kpis[0].seller_id);
@@ -784,18 +784,18 @@ if (!seller) return <Card>No hay sellers en este periodo</Card>;
 return (
 <>
 <Card style={{ marginBottom: 16 }}>
-<div style={{ display: ‘flex’, alignItems: ‘center’, gap: 12, flexWrap: ‘wrap’ }}>
+<div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
 <span style={{ fontWeight: 700, fontSize: 14 }}>Seller:</span>
 <select
 value={selected}
 onChange={(e) => setSelected(e.target.value)}
 style={{
 padding: 8,
-border: ’1px solid ’ + C.border,
+border: '1px solid ' + C.border,
 borderRadius: 8,
 fontSize: 14,
 minWidth: 280,
-fontFamily: ‘inherit’,
+fontFamily: 'inherit',
 }}
 > 
 {kpis.map((s)=> (
@@ -907,8 +907,8 @@ fontFamily: ‘inherit’,
 MAIN COMPONENT
 ────────────────────────────────────────────────────────────── */
 const Rendimiento: React.FC = () => {
-const [subtab, setSubtab] = useState<RendSubtab>(‘general’);
-const [periodo, setPeriodo] = useState<Periodo>(‘30d’);
+const [subtab, setSubtab] = useState<RendSubtab>('general');
+const [periodo, setPeriodo] = useState<Periodo>('30d');
 const [customFrom, setCustomFrom] = useState(daysAgoStr(30));
 const [customTo, setCustomTo] = useState(todayStr());
 
@@ -920,10 +920,10 @@ const kpis = useMemo(() => calcSellerKPIs(daily, skus, yoy), [daily, skus, yoy])
 return (
 <div>
 <div style={{ marginBottom: 16 }}>
-<h1 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: C.primary, letterSpacing: ‘-0.5px’ }}>
+<h1 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: C.primary, letterSpacing: '-0.5px' }}>
 RENDIMIENTO
 </h1>
-<p style={{ margin: ‘2px 0 0’, fontSize: 12, color: C.textMuted }}>
+<p style={{ margin: '2px 0 0', fontSize: 12, color: C.textMuted }}>
 KPIs operacionales — solo Sellers Elite
 </p>
 </div>
