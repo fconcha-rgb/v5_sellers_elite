@@ -14,6 +14,7 @@ import {
 import { AuthGate, useAuth } from './Auth';
 import { useEffect, useMemo, useState, useCallback, memo, type ReactNode } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, LabelList } from 'recharts';
+import Rendimiento from './Rendimiento';
 
 /* ──────────────────────────────────────────────────────────────
   TYPES
@@ -22,7 +23,7 @@ type ProspectStage = 'Prospectos' | 'Contactados' | 'Interesados' | 'No Interesa
 type SellerStatus = 'Iniciado' | 'Pausa' | 'Fuga';
 type SellerPlan = 'Full' | 'Premium' | 'Basico';
 type ViewMode = 'monthly' | 'ytd';
-type Tab = 'dashboard' | 'sellers' | 'hunting';
+type Tab = 'dashboard' | 'sellers' | 'hunting' | 'rendimiento';
 type SortDir = 'asc' | 'desc';
 type SortConfig = { key: string; dir: SortDir };
 
@@ -1493,10 +1494,11 @@ function AppInner() {
 
           <div className="tab-nav" style={{ display: 'flex', gap: 2, background: C.bgAlt, padding: 3, borderRadius: 10 }}>
              {([
-              ['dashboard', 'Dashboard'],
-              ['sellers', 'Cobros'],
-              ['hunting', 'Hunting Full'],
-            ] as [Tab, string][]).map((item) => (
+                  ['dashboard', 'Dashboard'],
+                  ['sellers', 'Cobros'],
+                  ['hunting', 'Hunting Full'],
+                  ['rendimiento', 'Rendimiento'],
+                ] as [Tab, string][]).map((item) => (
               <button
                 key={item[0]}
                 onClick={() => setTab(item[0])}
@@ -2023,7 +2025,7 @@ function AppInner() {
         )}
 
         {/* ═══ DASHBOARD ═══ */}
-        {tab === 'dashboard' && (
+        {tab === 'rendimiento' && <Rendimiento />}
           <div className="fi" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div className="kpi-row" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', flex: 1 }}>
               <KpiCard label="Revenue YTD" value={fmt(kpi.ytdRev)} color={C.primary} />
